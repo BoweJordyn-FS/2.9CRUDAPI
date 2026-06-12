@@ -6,9 +6,11 @@ POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-    "title":"The Nun",
+    "title":"Hereditary",
     "genre":"horror", 
-    "runTime":"96"
+    "status":"watched",
+    "rating": "5"
+    
 }
 
 ###
@@ -17,6 +19,6 @@ PATCH http://localhost:3000/movies/1
 
 ###
 
-DELETE http://localhost:3000/movies/1
+DELETE  http://localhost:3000/movies/6a2c65bfe0b010dd9f36bfa3
 
 

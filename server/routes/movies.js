@@ -39,7 +39,8 @@ router.post('/', async (req, res) => {
 	const movie = new Movie({
 		title: req.body.title,
 		genre: req.body.genre,
-		runTime: req.body.runTime,
+		status: req.body.status,
+		rating: req.body.rating,
 	});
 	try {
 		const newMovie = await movie.save();
@@ -51,11 +52,11 @@ router.post('/', async (req, res) => {
 
 // * UPDATE
 router.patch('/:id', getMovie, async (req, res) => {
-	if (req.body.title != null) {
-		res.movie.title = req.body.title;
+	if (req.body.status != null) {
+		res.movie.status = req.body.status;
 	}
 	if (req.body.genre != null) {
-		res.movie.genre = req.body.genre;
+		res.movie.rating = req.body.rating;
 	}
 	try {
 		const updatedMovie = await res.movie.save();
@@ -68,7 +69,7 @@ router.patch('/:id', getMovie, async (req, res) => {
 // * DELETE
 router.delete('/:id', getMovie, async (req, res) => {
 	try {
-		await res.movie.remove();
+		await res.movie.deleteOne();
 		res.json({ message: 'Movie was removed' });
 	} catch (error) {
 		res.status(500).json({ message: error.message });

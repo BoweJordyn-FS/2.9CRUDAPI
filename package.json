@@ -1,0 +1,8 @@
+{
+  "name": "watchlist-crudapi",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server/server.js",
+    "heroku-postbuild": "cd server && npm install"
+  }
+}
