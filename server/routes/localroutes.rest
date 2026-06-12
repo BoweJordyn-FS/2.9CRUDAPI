@@ -8,7 +8,9 @@ Content-Type: application/json
 {
     "title":"The Nun",
     "genre":"horror", 
-    "runTime":"96"
+    "status":"watched",
+    "rating": "3"
+    
 }
 
 ###
@@ -17,6 +19,6 @@ PATCH http://localhost:3000/movies/1
 
 ###
 
-DELETE http://localhost:3000/movies/1
+DELETE  http://localhost:3000/movies/6a2c65bfe0b010dd9f36bfa3
 
 
