@@ -8,7 +8,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-const studentsRouter = require('./routes/students');
+const moviesRouter = require('./routes/movies');
 
 const DATABASE_URL = process.env.DATABASE_URL;
 mongoose.connect(DATABASE_URL, {});
@@ -20,7 +20,7 @@ db.once('open', () => console.log('Connected to Database'));
 app.use(cors());
 app.use(express.json());
 
-app.use('/students', studentsRouter);
+app.use('/movies', moviesRouter);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
