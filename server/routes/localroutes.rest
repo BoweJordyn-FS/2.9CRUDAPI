@@ -6,10 +6,10 @@ POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-    "title":"The Nun",
+    "title":"Hereditary",
     "genre":"horror", 
     "status":"watched",
-    "rating": "3"
+    "rating": "5"
     
 }
 
