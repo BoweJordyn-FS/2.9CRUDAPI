@@ -21,7 +21,13 @@ db.once('open', () => console.log('Connected to Database'));
 app.use(cors());
 app.use(express.json());
 
-app.use('/movies', moviesRouter);
+app.use('/api/v1/movies', moviesRouter);
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+app.get('/*path', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
