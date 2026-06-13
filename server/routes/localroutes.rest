@@ -1,24 +1,24 @@
-GET https://watchlist-crudapi-9855cdafdb36.herokuapp.com/movies
+GET http://localhost:3000/movies
 
 ###
 
-POST https://watchlist-crudapi-9855cdafdb36.herokuapp.com/movies
+POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
     "title":"Hereditary",
     "genre":"horror", 
     "status":"watched",
-    "rating": "5"
+    "rating": "3"
     
 }
 
 ###
 
-PATCH https://watchlist-crudapi-9855cdafdb36.herokuapp.com/movies/6a2c80f5aab3b11c965c56da
+PATCH http://localhost:3000/movies/1
 
 ###
 
-DELETE  https://watchlist-crudapi-9855cdafdb36.herokuapp.com/movies/6a2c80f5aab3b11c965c56da
+DELETE  http://localhost:3000/movies/6a2c65bfe0b010dd9f36bfa3
 
 
