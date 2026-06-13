@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+export default function Movies() {
 	const [movies, setMovies] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -11,33 +10,29 @@ function App() {
 			? 'http://localhost:3000/api/v1'
 			: process.env.REACT_APP_BASE_URL;
 
+	let ignore = false;
 	useEffect(() => {
-		let ignore = false;
-		getMovies();
+		if (!ignore) {
+			getMovies();
+		}
 		return () => {
 			ignore = true;
 		};
 	}, []);
-
 	const getMovies = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch(`${API_BASE}/movies`);
-			const data = await res.json();
-			console.log({ data });
-			setMovies(data);
+			await fetch(`${API_BASE}/movies`)
+				.then((res) => res.json())
+				.then((data) => {
+					console.log({ data });
+					setMovies(data);
+				});
 		} catch (error) {
 			setError(error.message || 'Unexpected Error');
 		} finally {
 			setLoading(false);
 		}
 	};
-
-	return (
-		<>
-			<h1>Movies</h1>
-		</>
-	);
+	return <div></div>;
 }
-
-export default App;

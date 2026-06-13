@@ -9,7 +9,7 @@ Content-Type: application/json
     "title":"Hereditary",
     "genre":"horror", 
     "status":"watched",
-    "rating": "5"
+    "rating": "3"
     
 }
 
