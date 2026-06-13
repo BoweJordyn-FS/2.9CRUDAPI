@@ -1,8 +1,20 @@
 {
-  "name": "watchlist-crudapi",
-  "version": "1.0.0",
-  "scripts": {
-    "start": "node server/server.js",
-    "heroku-postbuild": "cd server && npm install"
-  }
+	"name": "watchlist-crudapi",
+	"version": "1.0.0",
+	"engines": {
+		"node": "26.3.0"
+	},
+	"scripts": {
+		"install-client": "npm install --prefix client",
+		"install-server": "npm install --prefix server",
+		"build-client": "npm run build --prefix client",
+		"heroku-postbuild": "npm run install-client && npm run install-server && npm run build-client",
+		"start": "npm start --prefix server",
+		"dev": "concurrently --raw \"npm run server\" \"npm run client\"",
+		"client": "cd client && npm run dev",
+		"server": "cd server && nodemon server.js"
+	},
+	"dependencies": {
+		"concurrently": "^10.0.3"
+	}
 }
