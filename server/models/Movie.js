@@ -18,6 +18,9 @@ const movieSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	notes: {
+		type: String,
+	},
 	created_at: {
 		type: Date,
 		required: true,
