@@ -1,6 +1,6 @@
 const API_BASE = import.meta.env.DEV
 	? 'http://localhost:3000/api/v1'
-	: import.meta.env.VITE_BASE_URL;
+	: '/api/v1';
 
 export const getMovies = async () => {
 	const res = await fetch(`${API_BASE}/movies`);
