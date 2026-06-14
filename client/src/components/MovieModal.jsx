@@ -78,6 +78,28 @@ export default function MovieModal({ form, setForm, onSubmit, onClose, isSubmitt
 					</div>
 
 					<div className="relative">
+						<select
+							id="rating"
+							value={form.rating}
+							onChange={handleChange}
+							disabled={form.status === 'want to watch'}
+							className="block px-3 pb-2 pt-5 w-full text-sm bg-[#FAF9F5] border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-[#480902] peer disabled:opacity-40 disabled:cursor-not-allowed"
+							required={form.status !== 'want to watch'}
+						>
+							<option value="" disabled />
+							{[1, 2, 3, 4, 5].map((n) => (
+								<option key={n} value={n}>{n}</option>
+							))}
+						</select>
+						<label
+							htmlFor="rating"
+							className="absolute text-sm text-gray-500 duration-200 transform -translate-y-3 scale-75 top-4 z-10 origin-left px-3 peer-focus:text-[#480902]"
+						>
+							Rating (1–5)
+						</label>
+					</div>
+
+					<div className="relative">
 						<textarea
 							id="notes"
 							rows={3}
