@@ -138,12 +138,11 @@ export default function Watchlist() {
 			{isLoading && <p className="text-[#FAF9F5]">Loading...</p>}
 			{isError && <p className="text-red-400">Failed to load movies.</p>}
 
-			<div className="grid grid-cols-3 gap-5">
+			<div className="grid grid-cols-4 gap-5">
 				{movies
 					.filter(
 						(m) =>
-							!filterStatus ||
-							m.status?.trim().toLowerCase() === filterStatus,
+							!filterStatus || m.status?.trim().toLowerCase() === filterStatus,
 					)
 					.map((movie) => (
 						<Link
@@ -161,7 +160,7 @@ export default function Watchlist() {
 									</p>
 									<div>
 										<span
-											className={`text-xs text-white capitalize rounded-xl p-1 px-2 ${movie.status === 'want to watch' ? 'bg-[#CE793A]' : 'bg-[#480902]'}`}
+											className={`text-xs text-white capitalize rounded-xl p-1 text-wrap ${movie.status === 'want to watch' ? 'bg-[#CE793A]' : 'bg-[#480902]'}`}
 										>
 											{movie.status}
 										</span>
