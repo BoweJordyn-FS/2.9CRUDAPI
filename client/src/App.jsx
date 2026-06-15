@@ -9,7 +9,7 @@ function App() {
 		<Router>
 			<div className="App bg-[#480902] min-h-screen">
 				<Navigation />
-				<div className="m-16">
+				<div className="m-25">
 					<Routes>
 						<Route
 							path="/"

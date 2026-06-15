@@ -8,15 +8,18 @@ import {
 	updateMovie,
 	deleteMovie,
 } from '../api/Movies';
-
-const defaultForm = { title: '', genre: '', status: '', rating: '', notes: '' };
+import {
+	DEFAULT_FORM,
+	normalizeStatus,
+	statusBadgeClass,
+} from '../constants/movie';
 
 export default function Watchlist() {
 	const [movies, setMovies] = useState([]);
 	const [isOpen, setIsOpen] = useState(false);
-	const [form, setForm] = useState(defaultForm);
+	const [form, setForm] = useState(DEFAULT_FORM);
 	const [editTarget, setEditTarget] = useState(null);
-	const [editForm, setEditForm] = useState(defaultForm);
+	const [editForm, setEditForm] = useState(DEFAULT_FORM);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isError, setIsError] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,10 +29,7 @@ export default function Watchlist() {
 
 	useEffect(() => {
 		getMovies()
-			.then((data) => {
-				console.log('movies from db:', data);
-				setMovies(data);
-			})
+			.then(setMovies)
 			.catch(() => setIsError(true))
 			.finally(() => setIsLoading(false));
 	}, []);
@@ -43,7 +43,7 @@ export default function Watchlist() {
 			};
 			const created = await createMovie(payload);
 			setMovies((prev) => [...prev, created]);
-			setForm(defaultForm);
+			setForm(DEFAULT_FORM);
 			setIsOpen(false);
 		} catch (err) {
 			alert(err.message);
@@ -138,12 +138,11 @@ export default function Watchlist() {
 			{isLoading && <p className="text-[#FAF9F5]">Loading...</p>}
 			{isError && <p className="text-red-400">Failed to load movies.</p>}
 
-			<div className="grid grid-cols-3 gap-5">
+			<div className="grid grid-cols-4 gap-5">
 				{movies
 					.filter(
 						(m) =>
-							!filterStatus ||
-							m.status?.trim().toLowerCase() === filterStatus,
+							!filterStatus || normalizeStatus(m.status) === filterStatus,
 					)
 					.map((movie) => (
 						<Link
@@ -152,7 +151,7 @@ export default function Watchlist() {
 							className="block"
 						>
 							<div className="bg-[#FAF9F5] rounded-xl p-4 flex justify-between items-start shadow">
-								<div className="m-1 display flex flex-col gap-2">
+								<div className="m-1 flex flex-col gap-2">
 									<h3 className="font-semibold text-[#480902]">
 										{movie.title}
 									</h3>
@@ -161,7 +160,7 @@ export default function Watchlist() {
 									</p>
 									<div>
 										<span
-											className={`text-xs text-white capitalize rounded-xl p-1 px-2 ${movie.status === 'want to watch' ? 'bg-[#CE793A]' : 'bg-[#480902]'}`}
+											className={`text-xs text-white capitalize rounded-xl p-1 text-wrap ${statusBadgeClass(movie.status)}`}
 										>
 											{movie.status}
 										</span>
