@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
 
-// Restful endpouts for students
-// GET POST PUT DELETE
+// RESTful endpoints for students
+// GET POST PATCH DELETE
 
 const getMovie = async (req, res, next) => {
 	let movie;
 	try {
 		movie = await Movie.findById(req.params.id);
 		if (movie === null) {
-			return res.status(400).json({ message: 'Movie not found' });
+			return res.status(404).json({ message: 'Movie not found' });
 		}
 	} catch (error) {
-		return res.status(500);
+		return res.status(500).json({ message: error.message });
 	}
 	res.movie = movie;
 	next();
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 		const movies = await Movie.find();
 		res.json(movies);
 	} catch (error) {
-		res.status(500);
+		res.status(500).json({ message: error.message });
 	}
 });
 

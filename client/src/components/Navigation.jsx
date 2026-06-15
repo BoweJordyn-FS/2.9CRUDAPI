@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export default function Navigation() {
 	return (
-		<nav className="flex items-center justify-between px-6 py-4 bg-[#E5D1A3] shadow-sm">
+		<header className="flex items-center justify-between px-6 py-4 bg-[#E5D1A3] shadow-sm">
 			<div className="flex items-center gap-2">
 				<MdMovieEdit className="text-[#480902] text-3xl" />
 
@@ -16,6 +16,6 @@ export default function Navigation() {
 			<h2 className="text-xl font-semibold text-[#480902] tracking-tight">
 				Your Movies, Your List.
 			</h2>
-		</nav>
+		</header>
 	);
 }
