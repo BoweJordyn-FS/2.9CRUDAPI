@@ -1,3 +1,5 @@
+import { WANT_TO_WATCH, WATCHED } from '../constants/movie';
+
 export default function MovieModal({ form, setForm, onSubmit, onClose, isSubmitting, title = 'Add Movie' }) {
 	const handleChange = (e) => setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
 
@@ -66,8 +68,8 @@ export default function MovieModal({ form, setForm, onSubmit, onClose, isSubmitt
 							className="block px-3 pb-2 pt-5 w-full text-sm bg-[#FAF9F5] border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-[#480902] peer"
 						>
 							<option value="" disabled />
-							<option value="want to watch">Want to Watch</option>
-							<option value="watched">Watched</option>
+							<option value={WANT_TO_WATCH}>Want to Watch</option>
+							<option value={WATCHED}>Watched</option>
 						</select>
 						<label
 							htmlFor="status"
@@ -82,9 +84,9 @@ export default function MovieModal({ form, setForm, onSubmit, onClose, isSubmitt
 							id="rating"
 							value={form.rating}
 							onChange={handleChange}
-							disabled={form.status === 'want to watch'}
+							disabled={form.status === WANT_TO_WATCH}
 							className="block px-3 pb-2 pt-5 w-full text-sm bg-[#FAF9F5] border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-[#480902] peer disabled:opacity-40 disabled:cursor-not-allowed"
-							required={form.status !== 'want to watch'}
+							required={form.status !== WANT_TO_WATCH}
 						>
 							<option value="" disabled />
 							{[1, 2, 3, 4, 5].map((n) => (
