@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { MdOutlineLocalMovies } from 'react-icons/md';
 import MovieModal from '../components/MovieModal';
 import EditDelete from '../components/EditDelete';
 import { getMovie, updateMovie, deleteMovie } from '../api/Movies';
-
-const defaultForm = { title: '', genre: '', status: '', rating: '', notes: '' };
+import { DEFAULT_FORM, statusBadgeClass } from '../constants/movie';
 
 export default function MovieDetails() {
 	const { id } = useParams();
-	const navigate = useNavigate();
 
 	const [movie, setMovie] = useState(null);
 	const [editTarget, setEditTarget] = useState(null);
-	const [editForm, setEditForm] = useState(defaultForm);
+	const [editForm, setEditForm] = useState(DEFAULT_FORM);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isError, setIsError] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
@@ -107,7 +105,7 @@ export default function MovieDetails() {
 						</h1>
 						<p className="text-sm text-gray-500 capitalize">{movie.genre}</p>
 						<span
-							className={`text-xs text-white capitalize rounded-xl p-1 px-2 w-fit ${movie.status === 'want to watch' ? 'bg-[#CE793A]' : 'bg-[#480902]'}`}
+							className={`text-xs text-white capitalize rounded-xl p-1 px-2 w-fit ${statusBadgeClass(movie.status)}`}
 						>
 							{movie.status}
 						</span>
@@ -129,7 +127,7 @@ export default function MovieDetails() {
 								Status
 							</span>
 							<span
-								className={`text-xs text-white capitalize rounded-xl py-1 px-2 ${movie.status === 'want to watch' ? 'bg-[#CE793A]' : 'bg-[#480902]'}`}
+								className={`text-xs text-white capitalize rounded-xl py-1 px-2 ${statusBadgeClass(movie.status)}`}
 							>
 								{movie.status}
 							</span>
