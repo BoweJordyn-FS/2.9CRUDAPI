@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function Heading({ children, variant = 'title' }) {
 	return (
-		<View>
+		<View style={styles.view}>
 			<Text style={variant === 'title' ? styles.title : styles.subtitle}>
 				{children}
 			</Text>
