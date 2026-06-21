@@ -140,10 +140,7 @@ export default function Home() {
 				/>
 			)}
 
-			<ScrollView
-				style={styles.movieContainer}
-				contentContainerStyle={styles.movieContent}
-			>
+			<ScrollView style={styles.movieContainer}>
 				{movies
 					.filter(
 						(m) => !filterStatus || normalizeStatus(m.status) === filterStatus,
@@ -228,6 +225,7 @@ const styles = StyleSheet.create({
 	movieContainer: {
 		flex: 1,
 		marginTop: 10,
+		margin: 4,
 	},
 	movieContent: {
 		padding: 10,
@@ -249,14 +247,14 @@ const styles = StyleSheet.create({
 	movieGenre: {
 		color: 'gray',
 		fontSize: 14,
-		margin: 2,
+		margin: 4,
 	},
 	movieStatus: {
 		alignSelf: 'flex-start',
 		paddingHorizontal: 10,
 		paddingVertical: 2,
 		borderRadius: 10,
-		marginTop: 4,
+		marginTop: 8,
 	},
 	movieStatusText: {
 		color: '#FAF9F5',
