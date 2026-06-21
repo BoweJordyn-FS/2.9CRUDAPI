@@ -9,7 +9,11 @@ export default function Screen({ children }) {
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.header}>
 					<Heading variant="title">
-						<CinemaOld color="#480902" width={20} height={20} />
+						<CinemaOld
+							color="#480902"
+							width={20}
+							height={20}
+						/>
 						Watchlist
 					</Heading>
 					<Heading variant="subtitle">Your Movies, Your List.</Heading>
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		paddingHorizontal: 24,
-		paddingVertical: 10,
+		paddingVertical: 2,
 	},
 	body: {
 		flex: 1,

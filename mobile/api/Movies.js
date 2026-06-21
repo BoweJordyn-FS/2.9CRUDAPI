@@ -1,6 +1,6 @@
-const API_BASE = import.meta.env.DEV
+const API_BASE = __DEV__
 	? 'http://localhost:3000/api/v1'
-	: '/api/v1';
+	: 'https://watchlist-crudapi-9855cdafdb36.herokuapp.com/api/v1';
 
 export const getMovies = async () => {
 	const res = await fetch(`${API_BASE}/movies`);

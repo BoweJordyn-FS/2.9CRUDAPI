@@ -12,7 +12,7 @@ const movieSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		required: true,
-		enum: ['want to watch', 'watched'],
+		enum: ['Want To Watch', 'Watched'],
 	},
 	rating: {
 		type: Number,
