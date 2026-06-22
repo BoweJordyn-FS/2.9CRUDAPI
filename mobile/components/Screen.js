@@ -42,6 +42,5 @@ const styles = StyleSheet.create({
 	},
 	body: {
 		flex: 1,
-		margin: 30,
 	},
 });

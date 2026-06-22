@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	Alert,
 	Platform,
+	useWindowDimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
@@ -35,6 +36,8 @@ const FILTER_OPTIONS = [
 
 export default function Home() {
 	const navigation = useNavigation();
+	const { width } = useWindowDimensions();
+	const isWideScreen = width >= 700;
 	const [movies, setMovies] = useState([]);
 	const [isOpen, setIsOpen] = useState(false);
 	const [form, setForm] = useState(DEFAULT_FORM);
@@ -139,142 +142,139 @@ export default function Home() {
 
 	return (
 		<Screen style={styles.screen}>
-			<View style={styles.container}>
-				<View style={styles.topRow}>
-					<Text style={styles.bodyTitle}>My Watchlist</Text>
-					<Pressable
-						style={styles.openButton}
-						onPress={() => setIsOpen(true)}
-					>
-						<Text style={styles.openButtonText}>+ Add Movie</Text>
-					</Pressable>
-				</View>
-
-				{isOpen && (
-					<MovieModal
-						form={form}
-						setForm={setForm}
-						onSubmit={handleCreate}
-						isSubmitting={isSubmitting}
-						onClose={() => {
-							setIsOpen(false);
-							setForm(DEFAULT_FORM);
-						}}
-					/>
-				)}
-
-				{editTarget && (
-					<MovieModal
-						form={editForm}
-						setForm={setEditForm}
-						onSubmit={handleUpdate}
-						isSubmitting={isUpdating}
-						onClose={() => setEditTarget(null)}
-						title="Edit Movie"
-					/>
-				)}
-
-				<ScrollView style={styles.movieContainer}>
-					<View style={styles.filterRow}>
-						<Pressable
-							style={styles.filterButton}
-							onPress={() => setIsFilterOpen((prev) => !prev)}
-						>
-							<Text style={styles.filterButtonText}>
-								{FILTER_OPTIONS.find((o) => o.value === filterStatus)?.label}
-							</Text>
-							<Text style={styles.filterArrow}>{isFilterOpen ? '▲' : '▼'}</Text>
-						</Pressable>
-
-						{isFilterOpen && (
-							<View style={styles.filterDropdown}>
-								{FILTER_OPTIONS.map((option) => (
-									<Pressable
-										key={option.value}
-										style={styles.filterOption}
-										onPress={() => {
-											setFilter(option.value);
-											setIsFilterOpen(false);
-										}}
-									>
-										<Text
-											style={[
-												styles.filterOptionText,
-												option.value === filterStatus &&
-													styles.filterOptionTextSelected,
-											]}
-										>
-											{option.label}
-										</Text>
-									</Pressable>
-								))}
-							</View>
-						)}
-					</View>
-					{movies
-						.filter(
-							(m) =>
-								!filterStatus || normalizeStatus(m.status) === filterStatus,
-						)
-						.map((movie) => (
-							<Pressable
-								key={movie._id}
-								style={styles.movieItem}
-								onPress={() =>
-									navigation.navigate('Details', { id: movie._id })
-								}
-							>
-								<Text style={styles.movieTitle}>{movie.title}</Text>
-								<Text style={styles.movieGenre}>{movie.genre}</Text>
-								{movie.rating ? (
-									<View style={styles.starsRow}>
-										{Array.from({ length: movie.rating }).map((_, i) => (
-											<StarSolid
-												key={i}
-												color="#917B24"
-												width={12}
-												height={12}
-											/>
-										))}
-									</View>
-								) : null}
-								<View
-									style={[
-										styles.movieStatus,
-										{ backgroundColor: statusBadgeColor(movie.status) },
-									]}
-								>
-									<Text style={styles.movieStatusText}>{movie.status}</Text>
-								</View>
-								<View style={styles.buttonContainer}>
-									<TouchableOpacity
-										activeOpacity={0.6}
-										style={styles.edit}
-										onPress={() => openEdit(movie)}
-									>
-										<EditPencil
-											color="#480902"
-											width={20}
-											height={20}
-										/>
-									</TouchableOpacity>
-									<TouchableOpacity
-										style={styles.delete}
-										onPress={() => confirmDelete(movie._id)}
-										disabled={isDeleting}
-										activeOpacity={0.6}
-									>
-										<TrashSolid
-											color="#B64B0F"
-											width={20}
-											height={20}
-										/>
-									</TouchableOpacity>
-								</View>
-							</Pressable>
-						))}
-				</ScrollView>
+			<View style={styles.topRow}>
+				<Text style={styles.bodyTitle}>My Watchlist</Text>
+				<Pressable
+					style={styles.openButton}
+					onPress={() => setIsOpen(true)}
+				>
+					<Text style={styles.openButtonText}>+ Add Movie</Text>
+				</Pressable>
 			</View>
+
+			{isOpen && (
+				<MovieModal
+					form={form}
+					setForm={setForm}
+					onSubmit={handleCreate}
+					isSubmitting={isSubmitting}
+					onClose={() => {
+						setIsOpen(false);
+						setForm(DEFAULT_FORM);
+					}}
+				/>
+			)}
+
+			{editTarget && (
+				<MovieModal
+					form={editForm}
+					setForm={setEditForm}
+					onSubmit={handleUpdate}
+					isSubmitting={isUpdating}
+					onClose={() => setEditTarget(null)}
+					title="Edit Movie"
+				/>
+			)}
+
+			<ScrollView style={styles.movieContainer}>
+				<View style={styles.filterRow}>
+					<Pressable
+						style={[styles.filterButton, isWideScreen && styles.movieItemWide]}
+						onPress={() => setIsFilterOpen((prev) => !prev)}
+					>
+						<Text style={styles.filterButtonText}>
+							{FILTER_OPTIONS.find((o) => o.value === filterStatus)?.label}
+						</Text>
+						<Text style={styles.filterArrow}>{isFilterOpen ? '▲' : '▼'}</Text>
+					</Pressable>
+
+					{isFilterOpen && (
+						<View style={styles.filterDropdown}>
+							{FILTER_OPTIONS.map((option) => (
+								<Pressable
+									key={option.value}
+									style={styles.filterOption}
+									onPress={() => {
+										setFilter(option.value);
+										setIsFilterOpen(false);
+									}}
+								>
+									<Text
+										style={[
+											styles.filterOptionText,
+											option.value === filterStatus &&
+												styles.filterOptionTextSelected,
+										]}
+									>
+										{option.label}
+									</Text>
+								</Pressable>
+							))}
+						</View>
+					)}
+				</View>
+				{movies
+					.filter(
+						(m) => !filterStatus || normalizeStatus(m.status) === filterStatus,
+					)
+					.map((movie) => (
+						<Pressable
+							key={movie._id}
+							style={[styles.movieItem, isWideScreen && styles.movieItemWide]}
+							onPress={() =>
+								navigation.navigate('Movie Details', { id: movie._id })
+							}
+						>
+							<Text style={styles.movieTitle}>{movie.title}</Text>
+							<Text style={styles.movieGenre}>{movie.genre}</Text>
+							{movie.rating ? (
+								<View style={styles.starsRow}>
+									{Array.from({ length: movie.rating }).map((_, i) => (
+										<StarSolid
+											key={i}
+											color="#917B24"
+											width={12}
+											height={12}
+										/>
+									))}
+								</View>
+							) : null}
+							<View
+								style={[
+									styles.movieStatus,
+									{ backgroundColor: statusBadgeColor(movie.status) },
+								]}
+							>
+								<Text style={styles.movieStatusText}>{movie.status}</Text>
+							</View>
+							<View style={styles.buttonContainer}>
+								<TouchableOpacity
+									activeOpacity={0.6}
+									style={styles.edit}
+									onPress={() => openEdit(movie)}
+								>
+									<EditPencil
+										color="#480902"
+										width={20}
+										height={20}
+									/>
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={styles.delete}
+									onPress={() => confirmDelete(movie._id)}
+									disabled={isDeleting}
+									activeOpacity={0.6}
+								>
+									<TrashSolid
+										color="#B64B0F"
+										width={20}
+										height={20}
+									/>
+								</TouchableOpacity>
+							</View>
+						</Pressable>
+					))}
+			</ScrollView>
 		</Screen>
 	);
 }
@@ -282,19 +282,6 @@ export default function Home() {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-	},
-	container: {
-		flex: 1,
-		...Platform.select({
-			ios: {
-				width: '100%',
-			},
-			default: {
-				marginHorizontal: 100,
-				width: '60%',
-				alignSelf: 'center',
-			},
-		}),
 	},
 	statusText: {
 		color: '#FAF9F5',
@@ -312,6 +299,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: 2,
 		paddingTop: 16,
+		marginHorizontal: '15%',
 	},
 	openButton: {
 		paddingHorizontal: 20,
@@ -334,13 +322,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		gap: 6,
 		paddingHorizontal: 12,
-		paddingVertical: 6,
+		paddingVertical: 10,
 		borderRadius: 8,
 		backgroundColor: '#FAF9F5',
 	},
 	filterButtonText: {
 		color: '#480902',
-		fontSize: 13,
+		fontSize: 15,
 		fontWeight: '600',
 	},
 	filterArrow: {
@@ -381,6 +369,10 @@ const styles = StyleSheet.create({
 		padding: 10,
 		width: '100%',
 		height: 'auto',
+	},
+	movieItemWide: {
+		width: '60%',
+		alignSelf: 'center',
 	},
 	movieTitle: {
 		color: '#480902',
