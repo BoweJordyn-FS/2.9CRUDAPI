@@ -51,7 +51,7 @@ export default function Details() {
 			setMovie(updated);
 			setEditTarget(null);
 		} catch (err) {
-			alert(err.message);
+			Alert.alert('Error', err.message);
 		} finally {
 			setIsUpdating(false);
 		}
@@ -63,7 +63,7 @@ export default function Details() {
 			await deleteMovie(movie._id);
 			setIsDeleted(true);
 		} catch (err) {
-			alert(err.message);
+			Alert.alert('Error', err.message);
 		} finally {
 			setIsDeleting(false);
 		}
@@ -80,7 +80,7 @@ export default function Details() {
 	if (isDeleted) {
 		return (
 			<Screen>
-				<Alert style={styles.statusText}>Movie deleted.</Alert>
+				<Text style={styles.statusText}>Movie deleted.</Text>
 				<Button
 					variant="plain"
 					color="#480902"
