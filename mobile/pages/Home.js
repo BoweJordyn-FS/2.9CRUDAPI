@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
-import { EditPencil, TrashSolid } from 'iconoir-react-native';
+import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
 import {
 	getMovies,
 	createMovie,
@@ -19,9 +19,17 @@ import {
 } from '../api/Movies';
 import {
 	DEFAULT_FORM,
+	WANT_TO_WATCH,
+	WATCHED,
 	normalizeStatus,
 	statusBadgeColor,
 } from '../constants/movie';
+
+const FILTER_OPTIONS = [
+	{ value: '', label: 'All' },
+	{ value: WANT_TO_WATCH, label: 'Want to Watch' },
+	{ value: WATCHED, label: 'Watched' },
+];
 
 export default function Home() {
 	const navigation = useNavigation();
@@ -36,6 +44,7 @@ export default function Home() {
 	const [isUpdating, setIsUpdating] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [filterStatus, setFilter] = useState('');
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	useEffect(() => {
 		getMovies()
@@ -52,7 +61,7 @@ export default function Home() {
 				rating: form.rating ? Number(form.rating) : undefined,
 			};
 			const created = await createMovie(payload);
-			setMovies((prev) => [...prev, created]);
+			setMovies((prev) => [created, ...prev]);
 			setForm(DEFAULT_FORM);
 			setIsOpen(false);
 		} catch (err) {
@@ -141,6 +150,42 @@ export default function Home() {
 			)}
 
 			<ScrollView style={styles.movieContainer}>
+				<View style={styles.filterRow}>
+					<Pressable
+						style={styles.filterButton}
+						onPress={() => setIsFilterOpen((prev) => !prev)}
+					>
+						<Text style={styles.filterButtonText}>
+							{FILTER_OPTIONS.find((o) => o.value === filterStatus)?.label}
+						</Text>
+						<Text style={styles.filterArrow}>{isFilterOpen ? '▲' : '▼'}</Text>
+					</Pressable>
+
+					{isFilterOpen && (
+						<View style={styles.filterDropdown}>
+							{FILTER_OPTIONS.map((option) => (
+								<Pressable
+									key={option.value}
+									style={styles.filterOption}
+									onPress={() => {
+										setFilter(option.value);
+										setIsFilterOpen(false);
+									}}
+								>
+									<Text
+										style={[
+											styles.filterOptionText,
+											option.value === filterStatus &&
+												styles.filterOptionTextSelected,
+										]}
+									>
+										{option.label}
+									</Text>
+								</Pressable>
+							))}
+						</View>
+					)}
+				</View>
 				{movies
 					.filter(
 						(m) => !filterStatus || normalizeStatus(m.status) === filterStatus,
@@ -153,6 +198,18 @@ export default function Home() {
 						>
 							<Text style={styles.movieTitle}>{movie.title}</Text>
 							<Text style={styles.movieGenre}>{movie.genre}</Text>
+							{movie.rating ? (
+								<View style={styles.starsRow}>
+									{Array.from({ length: movie.rating }).map((_, i) => (
+										<StarSolid
+											key={i}
+											color="#917B24"
+											width={12}
+											height={12}
+										/>
+									))}
+								</View>
+							) : null}
 							<View
 								style={[
 									styles.movieStatus,
@@ -222,6 +279,52 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontWeight: '600',
 	},
+	filterRow: {
+		marginTop: 12,
+		marginBottom: 12,
+		// alignItems: 'flex-start',
+		zIndex: 10,
+	},
+	filterButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 6,
+		paddingHorizontal: 12,
+		paddingVertical: 6,
+		borderRadius: 8,
+		backgroundColor: '#FAF9F5',
+	},
+	filterButtonText: {
+		color: '#480902',
+		fontSize: 13,
+		fontWeight: '600',
+	},
+	filterArrow: {
+		color: '#480902',
+		fontSize: 10,
+	},
+	filterDropdown: {
+		position: 'absolute',
+		top: '100%',
+		left: 0,
+		marginTop: 4,
+		minWidth: 140,
+		backgroundColor: '#FAF9F5',
+		borderRadius: 8,
+		overflow: 'hidden',
+		boxShadow: '2px 2px 6px grey',
+	},
+	filterOption: {
+		paddingHorizontal: 12,
+		paddingVertical: 10,
+	},
+	filterOptionText: {
+		color: '#480902',
+		fontSize: 13,
+	},
+	filterOptionTextSelected: {
+		fontWeight: '700',
+	},
 	movieContainer: {
 		flex: 1,
 		marginTop: 10,
@@ -248,6 +351,12 @@ const styles = StyleSheet.create({
 		color: 'gray',
 		fontSize: 14,
 		margin: 4,
+	},
+	starsRow: {
+		flexDirection: 'row',
+		gap: 2,
+		marginHorizontal: 4,
+		marginVertical: 4,
 	},
 	movieStatus: {
 		alignSelf: 'flex-start',
