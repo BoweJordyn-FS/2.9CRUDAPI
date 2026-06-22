@@ -12,11 +12,11 @@ export default function App() {
 			<NavigationContainer theme={DarkTheme}>
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
 					<Stack.Screen
-						name="Home"
+						name="Watchlist"
 						component={Home}
 					/>
 					<Stack.Screen
-						name="Details"
+						name="Movie Details"
 						component={Details}
 					/>
 				</Stack.Navigator>
