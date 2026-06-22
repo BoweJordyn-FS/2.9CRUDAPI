@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import {
+	Text,
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	Alert,
+	Platform,
+} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import Screen from '../components/Screen';
@@ -69,6 +76,13 @@ export default function Details() {
 		}
 	};
 
+	const confirmDelete = () => {
+		Alert.alert('Delete Movie', 'Are you sure you want to delete this movie?', [
+			{ text: 'Cancel', style: 'cancel' },
+			{ text: 'Delete', style: 'destructive', onPress: handleDelete },
+		]);
+	};
+
 	if (isLoading) {
 		return (
 			<Screen>
@@ -84,7 +98,7 @@ export default function Details() {
 				<Button
 					variant="plain"
 					color="#480902"
-					onPress={() => navigation.navigate('Home')}
+					onPress={() => navigation.goBack()}
 					style={styles.backButton}
 				>
 					← Back to Watchlist
@@ -117,7 +131,7 @@ export default function Details() {
 			<Button
 				variant="plain"
 				color="#480902"
-				onPress={() => navigation.navigate('Home')}
+				onPress={() => navigation.goBack()}
 				style={styles.backButton}
 			>
 				← Back
@@ -148,7 +162,7 @@ export default function Details() {
 					</TouchableOpacity>
 					<TouchableOpacity
 						activeOpacity={0.6}
-						onPress={handleDelete}
+						onPress={confirmDelete}
 						disabled={isDeleting}
 					>
 						<TrashSolid
@@ -215,6 +229,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 12,
+		...Platform.select({
+			ios: {
+				width: '100%',
+			},
+			default: {
+				marginHorizontal: 100,
+				width: '60%',
+				alignSelf: 'center',
+			},
+		}),
 	},
 	iconBox: {
 		width: 60,
@@ -259,6 +283,16 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start',
 	},
 	detailsSection: {
+		...Platform.select({
+			ios: {
+				width: '100%',
+			},
+			default: {
+				marginHorizontal: 100,
+				width: '60%',
+				alignSelf: 'center',
+			},
+		}),
 		backgroundColor: '#FAF9F5',
 		borderRadius: 8,
 		padding: 16,
