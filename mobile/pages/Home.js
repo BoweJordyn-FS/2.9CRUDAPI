@@ -6,6 +6,7 @@ import {
 	Pressable,
 	ScrollView,
 	TouchableOpacity,
+	Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
@@ -65,7 +66,7 @@ export default function Home() {
 			setForm(DEFAULT_FORM);
 			setIsOpen(false);
 		} catch (err) {
-			alert(err.message);
+			Alert.alert('Error', err.message);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -95,7 +96,7 @@ export default function Home() {
 			);
 			setEditTarget(null);
 		} catch (err) {
-			alert(err.message);
+			Alert.alert('Error', err.message);
 		} finally {
 			setIsUpdating(false);
 		}
@@ -107,7 +108,7 @@ export default function Home() {
 			await deleteMovie(id);
 			setMovies((prev) => prev.filter((m) => m._id !== id));
 		} catch (err) {
-			alert(err.message);
+			Alert.alert('Error', err.message);
 		} finally {
 			setIsDeleting(false);
 		}
@@ -221,7 +222,6 @@ export default function Home() {
 							<View style={styles.buttonContainer}>
 								<TouchableOpacity
 									activeOpacity={0.6}
-									underlayColor="#DDDDDD"
 									style={styles.edit}
 									onPress={() => openEdit(movie)}
 								>
@@ -236,7 +236,6 @@ export default function Home() {
 									onPress={() => handleDelete(movie._id)}
 									disabled={isDeleting}
 									activeOpacity={0.6}
-									underlayColor="#DDDDDD"
 								>
 									<TrashSolid
 										color="#B64B0F"
@@ -282,7 +281,6 @@ const styles = StyleSheet.create({
 	filterRow: {
 		marginTop: 12,
 		marginBottom: 12,
-		// alignItems: 'flex-start',
 		zIndex: 10,
 	},
 	filterButton: {
@@ -329,9 +327,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 10,
 		margin: 4,
-	},
-	movieContent: {
-		padding: 10,
 	},
 	movieItem: {
 		backgroundColor: '#FAF9F5',
