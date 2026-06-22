@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import Screen from '../components/Screen';
@@ -80,7 +80,7 @@ export default function Details() {
 	if (isDeleted) {
 		return (
 			<Screen>
-				<Text style={styles.statusText}>Movie deleted.</Text>
+				<Alert style={styles.statusText}>Movie deleted.</Alert>
 				<Button
 					variant="plain"
 					color="#480902"
