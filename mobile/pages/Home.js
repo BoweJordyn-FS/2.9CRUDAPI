@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	Alert,
+	Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
@@ -114,139 +115,166 @@ export default function Home() {
 		}
 	};
 
+	const confirmDelete = (id) => {
+		Alert.alert('Delete Movie', 'Are you sure you want to delete this movie?', [
+			{ text: 'Cancel', style: 'cancel' },
+			{ text: 'Delete', style: 'destructive', onPress: () => handleDelete(id) },
+		]);
+	};
+
+	if (isLoading) {
+		return (
+			<Screen>
+				<Text style={styles.statusText}>Loading...</Text>
+			</Screen>
+		);
+	}
+	if (isError) {
+		return (
+			<Screen>
+				<Text style={styles.statusText}>Failed to load movies.</Text>
+			</Screen>
+		);
+	}
+
 	return (
 		<Screen style={styles.screen}>
-			<View style={styles.topRow}>
-				<Text style={styles.bodyTitle}>My Watchlist</Text>
-				<Pressable
-					style={styles.openButton}
-					onPress={() => setIsOpen(true)}
-				>
-					<Text style={styles.openButtonText}>+ Add Movie</Text>
-				</Pressable>
-			</View>
-
-			{isOpen && (
-				<MovieModal
-					form={form}
-					setForm={setForm}
-					onSubmit={handleCreate}
-					isSubmitting={isSubmitting}
-					onClose={() => {
-						setIsOpen(false);
-						setForm(DEFAULT_FORM);
-					}}
-				/>
-			)}
-
-			{editTarget && (
-				<MovieModal
-					form={editForm}
-					setForm={setEditForm}
-					onSubmit={handleUpdate}
-					isSubmitting={isUpdating}
-					onClose={() => setEditTarget(null)}
-					title="Edit Movie"
-				/>
-			)}
-
-			<ScrollView style={styles.movieContainer}>
-				<View style={styles.filterRow}>
+			<View style={styles.container}>
+				<View style={styles.topRow}>
+					<Text style={styles.bodyTitle}>My Watchlist</Text>
 					<Pressable
-						style={styles.filterButton}
-						onPress={() => setIsFilterOpen((prev) => !prev)}
+						style={styles.openButton}
+						onPress={() => setIsOpen(true)}
 					>
-						<Text style={styles.filterButtonText}>
-							{FILTER_OPTIONS.find((o) => o.value === filterStatus)?.label}
-						</Text>
-						<Text style={styles.filterArrow}>{isFilterOpen ? '▲' : '▼'}</Text>
+						<Text style={styles.openButtonText}>+ Add Movie</Text>
 					</Pressable>
-
-					{isFilterOpen && (
-						<View style={styles.filterDropdown}>
-							{FILTER_OPTIONS.map((option) => (
-								<Pressable
-									key={option.value}
-									style={styles.filterOption}
-									onPress={() => {
-										setFilter(option.value);
-										setIsFilterOpen(false);
-									}}
-								>
-									<Text
-										style={[
-											styles.filterOptionText,
-											option.value === filterStatus &&
-												styles.filterOptionTextSelected,
-										]}
-									>
-										{option.label}
-									</Text>
-								</Pressable>
-							))}
-						</View>
-					)}
 				</View>
-				{movies
-					.filter(
-						(m) => !filterStatus || normalizeStatus(m.status) === filterStatus,
-					)
-					.map((movie) => (
+
+				{isOpen && (
+					<MovieModal
+						form={form}
+						setForm={setForm}
+						onSubmit={handleCreate}
+						isSubmitting={isSubmitting}
+						onClose={() => {
+							setIsOpen(false);
+							setForm(DEFAULT_FORM);
+						}}
+					/>
+				)}
+
+				{editTarget && (
+					<MovieModal
+						form={editForm}
+						setForm={setEditForm}
+						onSubmit={handleUpdate}
+						isSubmitting={isUpdating}
+						onClose={() => setEditTarget(null)}
+						title="Edit Movie"
+					/>
+				)}
+
+				<ScrollView style={styles.movieContainer}>
+					<View style={styles.filterRow}>
 						<Pressable
-							key={movie._id}
-							style={styles.movieItem}
-							onPress={() => navigation.navigate('Details', { id: movie._id })}
+							style={styles.filterButton}
+							onPress={() => setIsFilterOpen((prev) => !prev)}
 						>
-							<Text style={styles.movieTitle}>{movie.title}</Text>
-							<Text style={styles.movieGenre}>{movie.genre}</Text>
-							{movie.rating ? (
-								<View style={styles.starsRow}>
-									{Array.from({ length: movie.rating }).map((_, i) => (
-										<StarSolid
-											key={i}
-											color="#917B24"
-											width={12}
-											height={12}
-										/>
-									))}
-								</View>
-							) : null}
-							<View
-								style={[
-									styles.movieStatus,
-									{ backgroundColor: statusBadgeColor(movie.status) },
-								]}
-							>
-								<Text style={styles.movieStatusText}>{movie.status}</Text>
-							</View>
-							<View style={styles.buttonContainer}>
-								<TouchableOpacity
-									activeOpacity={0.6}
-									style={styles.edit}
-									onPress={() => openEdit(movie)}
-								>
-									<EditPencil
-										color="#480902"
-										width={20}
-										height={20}
-									/>
-								</TouchableOpacity>
-								<TouchableOpacity
-									style={styles.delete}
-									onPress={() => handleDelete(movie._id)}
-									disabled={isDeleting}
-									activeOpacity={0.6}
-								>
-									<TrashSolid
-										color="#B64B0F"
-										width={20}
-										height={20}
-									/>
-								</TouchableOpacity>
-							</View>
+							<Text style={styles.filterButtonText}>
+								{FILTER_OPTIONS.find((o) => o.value === filterStatus)?.label}
+							</Text>
+							<Text style={styles.filterArrow}>{isFilterOpen ? '▲' : '▼'}</Text>
 						</Pressable>
-					))}
-			</ScrollView>
+
+						{isFilterOpen && (
+							<View style={styles.filterDropdown}>
+								{FILTER_OPTIONS.map((option) => (
+									<Pressable
+										key={option.value}
+										style={styles.filterOption}
+										onPress={() => {
+											setFilter(option.value);
+											setIsFilterOpen(false);
+										}}
+									>
+										<Text
+											style={[
+												styles.filterOptionText,
+												option.value === filterStatus &&
+													styles.filterOptionTextSelected,
+											]}
+										>
+											{option.label}
+										</Text>
+									</Pressable>
+								))}
+							</View>
+						)}
+					</View>
+					{movies
+						.filter(
+							(m) =>
+								!filterStatus || normalizeStatus(m.status) === filterStatus,
+						)
+						.map((movie) => (
+							<Pressable
+								key={movie._id}
+								style={styles.movieItem}
+								onPress={() =>
+									navigation.navigate('Details', { id: movie._id })
+								}
+							>
+								<Text style={styles.movieTitle}>{movie.title}</Text>
+								<Text style={styles.movieGenre}>{movie.genre}</Text>
+								{movie.rating ? (
+									<View style={styles.starsRow}>
+										{Array.from({ length: movie.rating }).map((_, i) => (
+											<StarSolid
+												key={i}
+												color="#917B24"
+												width={12}
+												height={12}
+											/>
+										))}
+									</View>
+								) : null}
+								<View
+									style={[
+										styles.movieStatus,
+										{ backgroundColor: statusBadgeColor(movie.status) },
+									]}
+								>
+									<Text style={styles.movieStatusText}>{movie.status}</Text>
+								</View>
+								<View style={styles.buttonContainer}>
+									<TouchableOpacity
+										activeOpacity={0.6}
+										style={styles.edit}
+										onPress={() => openEdit(movie)}
+									>
+										<EditPencil
+											color="#480902"
+											width={20}
+											height={20}
+										/>
+									</TouchableOpacity>
+									<TouchableOpacity
+										style={styles.delete}
+										onPress={() => confirmDelete(movie._id)}
+										disabled={isDeleting}
+										activeOpacity={0.6}
+									>
+										<TrashSolid
+											color="#B64B0F"
+											width={20}
+											height={20}
+										/>
+									</TouchableOpacity>
+								</View>
+							</Pressable>
+						))}
+				</ScrollView>
+			</View>
 		</Screen>
 	);
 }
@@ -254,6 +282,24 @@ export default function Home() {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
+	},
+	container: {
+		flex: 1,
+		...Platform.select({
+			ios: {
+				width: '100%',
+			},
+			default: {
+				marginHorizontal: 100,
+				width: '60%',
+				alignSelf: 'center',
+			},
+		}),
+	},
+	statusText: {
+		color: '#FAF9F5',
+		fontSize: 16,
+		margin: 16,
 	},
 	bodyTitle: {
 		color: 'white',
@@ -369,8 +415,7 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		width: '20%',
-		justifyContent: 'space-between',
+		gap: 30,
 		alignSelf: 'flex-end',
 		padding: 2,
 	},
