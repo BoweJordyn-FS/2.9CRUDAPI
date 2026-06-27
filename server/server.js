@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 const moviesRouter = require('./routes/movies');
+const authRouter = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/v1/movies', moviesRouter);
+app.use('/api/v1/auth', authRouter);
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
