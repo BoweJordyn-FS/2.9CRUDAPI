@@ -10,7 +10,7 @@ import {
 	Platform,
 	useWindowDimensions,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, Link } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
 import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
@@ -177,6 +177,10 @@ export default function Home() {
 			)}
 
 			<ScrollView style={styles.movieContainer}>
+				<View>
+					<Link screen="Login">Login</Link>
+					<Link screen="Sign Up">Signup</Link>
+				</View>
 				<View style={styles.filterRow}>
 					<Pressable
 						style={[styles.filterButton, isWideScreen && styles.movieItemWide]}
@@ -299,7 +303,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: 2,
 		paddingTop: 16,
-		marginHorizontal: '15%',
+		marginHorizontal: '4%',
 	},
 	openButton: {
 		paddingHorizontal: 20,
@@ -360,7 +364,7 @@ const styles = StyleSheet.create({
 	movieContainer: {
 		flex: 1,
 		marginTop: 10,
-		margin: 4,
+		marginHorizontal: 16,
 	},
 	movieItem: {
 		backgroundColor: '#FAF9F5',

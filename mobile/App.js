@@ -3,6 +3,7 @@ import { DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './pages/Home';
 import Details from './pages/Details';
+import Login from './pages/Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ export default function App() {
 					<Stack.Screen
 						name="Movie Details"
 						component={Details}
+					/>
+					<Stack.Screen
+						name="Login"
+						component={Login}
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
