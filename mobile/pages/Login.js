@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AuthScreen from '../components/AuthScreen';
-import { signin } from '../api/Auth';
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
 	const navigation = useNavigation();
+	const { signIn } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,8 +14,8 @@ export default function Login() {
 	const handleLogin = async () => {
 		setIsSubmitting(true);
 		try {
-			await signin(email, password);
-			navigation.navigate('Watchlist');
+			// On success the auth stack unmounts and the protected app is shown.
+			await signIn(email, password);
 		} catch (err) {
 			Alert.alert('Login failed', err.message);
 		} finally {

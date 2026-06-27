@@ -13,6 +13,7 @@ import {
 import { useNavigation, Link } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
+import { useAuth } from '../context/AuthContext';
 import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
 import {
 	getMovies,
@@ -36,6 +37,7 @@ const FILTER_OPTIONS = [
 
 export default function Home() {
 	const navigation = useNavigation();
+	const { signOut } = useAuth();
 	const { width } = useWindowDimensions();
 	const isWideScreen = width >= 700;
 	const [movies, setMovies] = useState([]);
@@ -144,12 +146,20 @@ export default function Home() {
 		<Screen style={styles.screen}>
 			<View style={styles.topRow}>
 				<Text style={styles.bodyTitle}>My Watchlist</Text>
-				<Pressable
-					style={styles.openButton}
-					onPress={() => setIsOpen(true)}
-				>
-					<Text style={styles.openButtonText}>+ Add Movie</Text>
-				</Pressable>
+				<View style={styles.topActions}>
+					<Pressable
+						style={styles.signOutButton}
+						onPress={signOut}
+					>
+						<Text style={styles.signOutButtonText}>Sign Out</Text>
+					</Pressable>
+					<Pressable
+						style={styles.openButton}
+						onPress={() => setIsOpen(true)}
+					>
+						<Text style={styles.openButtonText}>+ Add Movie</Text>
+					</Pressable>
+				</View>
 			</View>
 
 			{isOpen && (
@@ -304,6 +314,23 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 2,
 		paddingTop: 16,
 		marginHorizontal: '4%',
+	},
+	topActions: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
+	},
+	signOutButton: {
+		paddingHorizontal: 14,
+		paddingVertical: 10,
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: '#E5D1A3',
+	},
+	signOutButtonText: {
+		color: '#E5D1A3',
+		fontSize: 14,
+		fontWeight: '600',
 	},
 	openButton: {
 		paddingHorizontal: 20,
