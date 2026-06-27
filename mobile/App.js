@@ -9,9 +9,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
-// Picks the auth stack or the protected app stack based on session state.
-// Because the screens are mounted conditionally, the protected views are
-// unreachable without a valid token.
 function RootNavigator() {
 	const { isAuthenticated, isLoading } = useAuth();
 
