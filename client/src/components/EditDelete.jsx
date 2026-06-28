@@ -6,6 +6,7 @@ export default function EditDelete({ onEdit, onDelete, isDeleting }) {
 			<button
 				onClick={(e) => {
 					e.stopPropagation();
+					navigation;
 					e.preventDefault();
 					onEdit();
 				}}

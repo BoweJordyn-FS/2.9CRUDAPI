@@ -15,6 +15,8 @@
 		"server": "cd server && nodemon server.js"
 	},
 	"dependencies": {
-		"concurrently": "^10.0.3"
+		"concurrently": "^10.0.3",
+		"iconoir-react-native": "^7.11.1",
+		"react-native-safe-area-context": "^5.8.0"
 	}
 }

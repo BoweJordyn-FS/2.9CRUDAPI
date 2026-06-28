@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
+const passport = require('passport');
+const passportServices = require('../services/passport');
+const protectedRoute = passport.authenticate('jwt', { session: false });
 
 // RESTful endpoints for students
 // GET POST PATCH DELETE
@@ -20,7 +23,7 @@ const getMovie = async (req, res, next) => {
 };
 
 // * GET ALL
-router.get('/', async (req, res) => {
+router.get('/', protectedRoute, async (req, res) => {
 	try {
 		const movies = await Movie.find();
 		res.json(movies);
@@ -39,7 +42,7 @@ router.post('/', async (req, res) => {
 	const movie = new Movie({
 		title: req.body.title,
 		genre: req.body.genre,
-		status: req.body.status,
+		status: req.body.status?.trim().toLowerCase(),
 		rating: req.body.rating || null,
 		notes: req.body.notes,
 	});
@@ -55,7 +58,8 @@ router.post('/', async (req, res) => {
 router.patch('/:id', getMovie, async (req, res) => {
 	if (req.body.title != null) res.movie.title = req.body.title;
 	if (req.body.genre != null) res.movie.genre = req.body.genre;
-	if (req.body.status != null) res.movie.status = req.body.status;
+	if (req.body.status != null)
+		res.movie.status = req.body.status.trim().toLowerCase();
 	if (req.body.rating != null) res.movie.rating = req.body.rating;
 	if (req.body.notes != null) res.movie.notes = req.body.notes;
 	try {

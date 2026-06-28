@@ -1,8 +1,8 @@
 import { authHeader } from './token';
 
-const API_BASE = import.meta.env.DEV
-	? 'http://localhost:3000/api/v1'
-	: '/api/v1';
+// Always use the deployed API so the app works on a physical device in dev
+// (localhost would resolve to the device itself, not the dev machine).
+const API_BASE = 'https://watchlist-crudapi-9855cdafdb36.herokuapp.com/api/v1';
 
 export const getMovies = async () => {
 	const res = await fetch(`${API_BASE}/movies`, { headers: authHeader() });
