@@ -11,7 +11,8 @@ const protectedRoute = passport.authenticate('jwt', { session: false });
 const getMovie = async (req, res, next) => {
 	let movie;
 	try {
-		movie = await Movie.findById(req.params.id);
+		// Scope to the logged-in user so one user can't view/edit/delete another's movie.
+		movie = await Movie.findOne({ _id: req.params.id, user: req.user._id });
 		if (movie === null) {
 			return res.status(404).json({ message: 'Movie not found' });
 		}
@@ -25,7 +26,7 @@ const getMovie = async (req, res, next) => {
 // * GET ALL
 router.get('/', protectedRoute, async (req, res) => {
 	try {
-		const movies = await Movie.find();
+		const movies = await Movie.find({ user: req.user._id });
 		res.json(movies);
 	} catch (error) {
 		res.status(500).json({ message: error.message });
@@ -45,6 +46,7 @@ router.post('/', async (req, res) => {
 		status: req.body.status?.trim().toLowerCase(),
 		rating: req.body.rating || null,
 		notes: req.body.notes,
+		user: req.user._id,
 	});
 	try {
 		const newMovie = await movie.save();
