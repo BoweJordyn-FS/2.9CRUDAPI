@@ -10,7 +10,7 @@ import {
 	Platform,
 	useWindowDimensions,
 } from 'react-native';
-import { useNavigation, Link } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
 import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
@@ -27,9 +27,7 @@ import {
 	normalizeStatus,
 	statusBadgeColor,
 } from '../constants/movie';
-
-import moviesService from '../services/movies.services';
-import authService from '../api/Auth';
+import { useAuth } from '../context/AuthContext';
 
 const FILTER_OPTIONS = [
 	{ value: '', label: 'All' },
@@ -39,6 +37,7 @@ const FILTER_OPTIONS = [
 
 export default function Home() {
 	const navigation = useNavigation();
+	const { logOut } = useAuth();
 	const { width } = useWindowDimensions();
 	const isWideScreen = width >= 700;
 	const [movies, setMovies] = useState([]);
@@ -55,20 +54,10 @@ export default function Home() {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	useEffect(() => {
-		(moviesService.getAllPrivatePosts().then((response) => {
-			setMovies(response.data);
-		}),
-			(error) => {
-				console.log('Secured Page Error: ', error.response);
-				if (error.response && error.response.status == 403) {
-					authService.logout();
-					navigate('Login');
-				}
-			});
-		// getMovies()
-		// 	.then(setMovies)
-		// 	.catch(() => setIsError(true))
-		// 	.finally(() => setIsLoading(false));
+		getMovies()
+			.then(setMovies)
+			.catch(() => setIsError(true))
+			.finally(() => setIsLoading(false));
 	}, []);
 
 	const handleCreate = async () => {
@@ -160,7 +149,7 @@ export default function Home() {
 				<View style={styles.topActions}>
 					<Pressable
 						style={styles.signOutButton}
-						onPress={signOut}
+						onPress={logOut}
 					>
 						<Text style={styles.signOutButtonText}>Sign Out</Text>
 					</Pressable>
@@ -198,10 +187,6 @@ export default function Home() {
 			)}
 
 			<ScrollView style={styles.movieContainer}>
-				<View>
-					<Link screen="Login">Login</Link>
-					<Link screen="Sign Up">Signup</Link>
-				</View>
 				<View style={styles.filterRow}>
 					<Pressable
 						style={[styles.filterButton, isWideScreen && styles.movieItemWide]}

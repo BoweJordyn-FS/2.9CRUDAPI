@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AuthScreen from '../components/AuthScreen';
-import authService from '../api/Auth';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
 	const navigation = useNavigation();
-	const { setCurrentUser } = useAuth();
+	const { signIn } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,8 +22,7 @@ export default function Login() {
 		setIsSubmitting(true);
 		try {
 			// On success the auth stack unmounts and the protected app is shown.
-			const user = await authService.login(email, password);
-			setCurrentUser(user);
+			await signIn(email, password);
 		} catch (err) {
 			Alert.alert('Login failed', err.message);
 		} finally {
