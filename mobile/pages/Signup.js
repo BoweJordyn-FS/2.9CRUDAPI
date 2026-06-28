@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, Pressable, Alert } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	TextInput,
+	Pressable,
+	Alert,
+	View,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AuthScreen from '../components/AuthScreen';
 import { useAuth } from '../context/AuthContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Signup() {
 	const navigation = useNavigation();
@@ -10,6 +18,11 @@ export default function Signup() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
+
+	const toggleShowPassword = () => {
+		setShowPassword(!showPassword);
+	};
 
 	const handleSignup = async () => {
 		setIsSubmitting(true);
@@ -34,14 +47,27 @@ export default function Signup() {
 				autoCapitalize="none"
 				keyboardType="email-address"
 			/>
-			<TextInput
-				style={styles.input}
-				value={password}
-				onChangeText={setPassword}
-				placeholder="Password"
-				placeholderTextColor="#D8C9A0"
-				secureTextEntry
-			/>
+			<View style={styles.password}>
+				<TextInput
+					style={[styles.input, styles.passwordInput]}
+					value={password}
+					onChangeText={setPassword}
+					placeholder="Password"
+					placeholderTextColor="#D8C9A0"
+					secureTextEntry={!showPassword}
+				/>
+				<Pressable
+					style={styles.eyeButton}
+					onPress={toggleShowPassword}
+				>
+					<MaterialCommunityIcons
+						name={showPassword ? 'eye-off' : 'eye'}
+						size={22}
+						color="#E5D1A3"
+					/>
+				</Pressable>
+			</View>
+
 			<Pressable
 				style={styles.signupButton}
 				onPress={handleSignup}
@@ -59,6 +85,22 @@ export default function Signup() {
 }
 
 const styles = StyleSheet.create({
+	password: {
+		width: '80%',
+		justifyContent: 'center',
+		marginBottom: 12,
+	},
+	passwordInput: {
+		width: '100%',
+		paddingRight: 44,
+		marginBottom: 0,
+	},
+	eyeButton: {
+		position: 'absolute',
+		right: 12,
+		height: '100%',
+		justifyContent: 'center',
+	},
 	input: {
 		width: '80%',
 		borderWidth: 1,

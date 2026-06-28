@@ -211,8 +211,7 @@ export default function Details() {
 
 const styles = StyleSheet.create({
 	screenContainer: {
-		margin: 10,
-		marginVertical: 25,
+		margin: 14,
 	},
 	statusText: {
 		color: '#FAF9F5',
@@ -234,16 +233,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 12,
-		...Platform.select({
-			ios: {
-				width: '100%',
-			},
-			default: {
-				marginHorizontal: 100,
-				width: '60%',
-				alignSelf: 'center',
-			},
-		}),
 	},
 	iconBox: {
 		width: 60,
@@ -286,18 +275,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 12,
 		alignSelf: 'flex-start',
-	},
-	detailsSection: {
-		...Platform.select({
-			ios: {
-				width: '100%',
-			},
-			default: {
-				marginHorizontal: 100,
-				width: '60%',
-				alignSelf: 'center',
-			},
-		}),
 		backgroundColor: '#FAF9F5',
 		borderRadius: 8,
 		padding: 16,
