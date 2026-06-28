@@ -10,13 +10,13 @@ export default function Heading({ children, variant = 'title' }) {
 
 const styles = StyleSheet.create({
 	title: {
-		fontSize: 24,
+		fontSize: 26,
 		fontWeight: '600',
 		color: '#480902',
 		letterSpacing: -0.3,
 	},
 	subtitle: {
-		fontSize: 15,
+		fontSize: 17,
 		fontWeight: '600',
 		color: '#480902',
 		letterSpacing: -0.3,

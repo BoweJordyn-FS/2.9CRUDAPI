@@ -12,8 +12,8 @@ export default function AuthScreen({ title, children }) {
 					<View style={styles.screenTitle}>
 						<CinemaOld
 							color="#480902"
-							width={35}
-							height={35}
+							width={40}
+							height={40}
 						/>
 						<Text style={styles.title}>Watchlist</Text>
 					</View>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 	},
 	title: {
-		fontSize: 35,
+		fontSize: 45,
 		overflow: 'visible',
 	},
 	pageTitle: {
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: '#480902',
-		borderRadius: 45,
+		borderTopLeftRadius: 45,
+		borderTopRightRadius: 45,
 	},
 });

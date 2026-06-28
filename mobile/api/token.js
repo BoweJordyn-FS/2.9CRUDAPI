@@ -1,6 +1,5 @@
 // In-memory JWT holder so the movies API can attach the token without each
-// caller passing it. Not persisted, so a reload clears it and the app returns
-// to the login screen (acceptable for this assignment).
+// caller passing it.
 let authToken = null;
 
 export const setAuthToken = (token) => {

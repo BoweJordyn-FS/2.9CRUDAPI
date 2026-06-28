@@ -1,9 +1,12 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { CinemaOld } from 'iconoir-react-native';
 import Heading from './Heading';
+import { useAuth } from '../context/AuthContext';
 
 export default function Screen({ children }) {
+	const { logOut } = useAuth();
+
 	return (
 		<SafeAreaProvider style={styles.container}>
 			<SafeAreaView style={styles.safeArea}>
@@ -18,6 +21,12 @@ export default function Screen({ children }) {
 					</Heading>
 					<Heading variant="subtitle">Your Movies, Your List.</Heading>
 				</View>
+				<Pressable
+					style={styles.signOutButton}
+					onPress={logOut}
+				>
+					<Text style={styles.signOutButtonText}>Sign Out</Text>
+				</Pressable>
 			</SafeAreaView>
 			<View style={styles.body}>{children}</View>
 		</SafeAreaProvider>
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		backgroundColor: '#E5D1A3',
-		flexDirection: 'row',
+		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		paddingHorizontal: 24,
@@ -42,5 +51,20 @@ const styles = StyleSheet.create({
 	},
 	body: {
 		flex: 1,
+	},
+	signOutButton: {
+		paddingHorizontal: 10,
+		paddingVertical: 8,
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: '#480902',
+		width: '25%',
+		alignSelf: 'center',
+	},
+	signOutButtonText: {
+		color: '#480902',
+		fontSize: 14,
+		fontWeight: '600',
+		textAlign: 'center',
 	},
 });

@@ -127,80 +127,81 @@ export default function Details() {
 					title="Edit Movie"
 				/>
 			)}
+			<View style={styles.screenContainer}>
+				<Button
+					variant="plain"
+					color="#480902"
+					onPress={() => navigation.goBack()}
+					style={styles.backButton}
+				>
+					← Back
+				</Button>
 
-			<Button
-				variant="plain"
-				color="#480902"
-				onPress={() => navigation.goBack()}
-				style={styles.backButton}
-			>
-				← Back
-			</Button>
-
-			<View style={styles.card}>
-				<View style={styles.iconBox}>
-					<Movie
-						color="#480902"
-						width={30}
-						height={30}
-					/>
-				</View>
-				<View style={styles.cardInfo}>
-					<Text style={styles.title}>{movie.title}</Text>
-					<Text style={styles.genre}>{movie.genre}</Text>
-				</View>
-				<View style={styles.buttonContainer}>
-					<TouchableOpacity
-						activeOpacity={0.6}
-						onPress={openEdit}
-					>
-						<EditPencil
+				<View style={styles.card}>
+					<View style={styles.iconBox}>
+						<Movie
 							color="#480902"
-							width={20}
-							height={20}
+							width={30}
+							height={30}
 						/>
-					</TouchableOpacity>
-					<TouchableOpacity
-						activeOpacity={0.6}
-						onPress={confirmDelete}
-						disabled={isDeleting}
-					>
-						<TrashSolid
-							color="#B64B0F"
-							width={20}
-							height={20}
-						/>
-					</TouchableOpacity>
-				</View>
-			</View>
-
-			<View style={styles.detailsSection}>
-				<Text style={styles.detailsHeading}>Details</Text>
-				<View style={styles.detailsTable}>
-					<View style={styles.detailsRow}>
-						<Text style={styles.detailsLabel}>Status</Text>
-						<View
-							style={[
-								styles.statusBadge,
-								{ backgroundColor: statusBadgeColor(movie.status) },
-							]}
+					</View>
+					<View style={styles.cardInfo}>
+						<Text style={styles.title}>{movie.title}</Text>
+						<Text style={styles.genre}>{movie.genre}</Text>
+					</View>
+					<View style={styles.buttonContainer}>
+						<TouchableOpacity
+							activeOpacity={0.6}
+							onPress={openEdit}
 						>
-							<Text style={styles.statusBadgeText}>{movie.status}</Text>
+							<EditPencil
+								color="#480902"
+								width={20}
+								height={20}
+							/>
+						</TouchableOpacity>
+						<TouchableOpacity
+							activeOpacity={0.6}
+							onPress={confirmDelete}
+							disabled={isDeleting}
+						>
+							<TrashSolid
+								color="#B64B0F"
+								width={20}
+								height={20}
+							/>
+						</TouchableOpacity>
+					</View>
+				</View>
+
+				<View style={styles.detailsSection}>
+					<Text style={styles.detailsHeading}>Details</Text>
+					<View style={styles.detailsTable}>
+						<View style={styles.detailsRow}>
+							<Text style={styles.detailsLabel}>Status</Text>
+							<View
+								style={[
+									styles.statusBadge,
+									{ backgroundColor: statusBadgeColor(movie.status) },
+								]}
+							>
+								<Text style={styles.statusBadgeText}>{movie.status}</Text>
+							</View>
 						</View>
-					</View>
-					<View style={styles.detailsRow}>
-						<Text style={styles.detailsLabel}>Rating</Text>
-						<Text style={styles.detailsValue}>
-							{movie.rating ? `${movie.rating} / 5` : '—'}
-						</Text>
-					</View>
-					<View style={styles.detailsRow}>
-						<Text style={styles.detailsLabel}>Genre</Text>
-						<Text style={styles.detailsValue}>{movie.genre || '—'}</Text>
-					</View>
-					<View style={styles.detailsRow}>
-						<Text style={styles.detailsLabel}>Notes</Text>
-						<Text style={styles.detailsValue}>{movie.notes || '—'}</Text>
+						<View style={styles.detailsRow}>
+							<Text style={styles.detailsLabel}>Rating</Text>
+							<Text style={styles.detailsValue}>
+								{movie.rating ? `${movie.rating} / 5` : '—'}
+							</Text>
+						</View>
+						<View style={styles.detailsRow}>
+							<Text style={styles.detailsLabel}>Genre</Text>
+							<Text style={styles.detailsValue}>{movie.genre || '—'}</Text>
+						</View>
+						<View style={styles.detailsRow}>
+							<Text style={styles.detailsLabel}>Notes</Text>
+							<Text style={styles.detailsValue}>{movie.notes || '—'}</Text>
+						</View>
 					</View>
 				</View>
 			</View>
@@ -209,6 +210,10 @@ export default function Details() {
 }
 
 const styles = StyleSheet.create({
+	screenContainer: {
+		margin: 10,
+		marginVertical: 25,
+	},
 	statusText: {
 		color: '#FAF9F5',
 		fontSize: 16,

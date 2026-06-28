@@ -148,12 +148,6 @@ export default function Home() {
 				<Text style={styles.bodyTitle}>My Watchlist</Text>
 				<View style={styles.topActions}>
 					<Pressable
-						style={styles.signOutButton}
-						onPress={logOut}
-					>
-						<Text style={styles.signOutButtonText}>Sign Out</Text>
-					</Pressable>
-					<Pressable
 						style={styles.openButton}
 						onPress={() => setIsOpen(true)}
 					>
@@ -314,18 +308,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		gap: 8,
 	},
-	signOutButton: {
-		paddingHorizontal: 14,
-		paddingVertical: 10,
-		borderRadius: 8,
-		borderWidth: 1,
-		borderColor: '#E5D1A3',
-	},
-	signOutButtonText: {
-		color: '#E5D1A3',
-		fontSize: 14,
-		fontWeight: '600',
-	},
+
 	openButton: {
 		paddingHorizontal: 20,
 		paddingVertical: 10,
