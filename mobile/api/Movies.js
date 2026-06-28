@@ -1,4 +1,4 @@
-import { authHeader } from './token';
+import { authHeader } from '../services/auth-header';
 
 // Always use the deployed API so the app works on a physical device in dev
 // (localhost would resolve to the device itself, not the dev machine).
@@ -11,7 +11,9 @@ export const getMovies = async () => {
 };
 
 export const getMovie = async (id) => {
-	const res = await fetch(`${API_BASE}/movies/${id}`, { headers: authHeader() });
+	const res = await fetch(`${API_BASE}/movies/${id}`, {
+		headers: authHeader(),
+	});
 	if (!res.ok) throw new Error('Failed to fetch movie');
 	return res.json();
 };

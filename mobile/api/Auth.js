@@ -1,24 +1,19 @@
-const API_BASE = 'https://watchlist-crudapi-9855cdafdb36.herokuapp.com/api/v1';
+import axios from 'axios';
 
-export const signin = async (email, password) => {
-	const res = await fetch(`${API_BASE}/auth/signin`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ email, password }),
-	});
-	if (!res.ok) throw new Error('Invalid email or password');
-	return res.json();
+const API_BASE = 'https://watchlist-crudapi-9855cdafdb36.herokuapp.com/api/v1/auth';
+
+const login = async (email, password) => {
+	const response = await axios.post(`${API_BASE}/signin`, { email, password });
+	return response.data;
 };
 
-export const signup = async (email, password) => {
-	const res = await fetch(`${API_BASE}/auth/`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ email, password }),
-	});
-	if (!res.ok) {
-		const data = await res.json().catch(() => null);
-		throw new Error(data?.error || 'Failed to create account');
-	}
-	return res.json();
+const signup = async (email, password) => {
+	const response = await axios.post(`${API_BASE}/`, { email, password });
+	return response.data;
 };
+
+const authService = {
+	signup,
+	login,
+};
+export default authService;

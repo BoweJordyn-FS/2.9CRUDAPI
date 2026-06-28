@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, Pressable, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AuthScreen from '../components/AuthScreen';
+import authService from '../api/Auth';
 import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
 	const navigation = useNavigation();
-	const { signUp } = useAuth();
+	const { setCurrentUser } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,7 +16,8 @@ export default function Signup() {
 		setIsSubmitting(true);
 		try {
 			// On success the auth stack unmounts and the protected app is shown.
-			await signUp(email, password);
+			const user = await authService.signup(email, password);
+			setCurrentUser(user);
 		} catch (err) {
 			Alert.alert('Sign up failed', err.message);
 		} finally {

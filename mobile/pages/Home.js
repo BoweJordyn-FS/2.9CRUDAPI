@@ -13,7 +13,6 @@ import {
 import { useNavigation, Link } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
-import { useAuth } from '../context/AuthContext';
 import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
 import {
 	getMovies,
@@ -29,6 +28,9 @@ import {
 	statusBadgeColor,
 } from '../constants/movie';
 
+import moviesService from '../services/movies.services';
+import authService from '../api/Auth';
+
 const FILTER_OPTIONS = [
 	{ value: '', label: 'All' },
 	{ value: WANT_TO_WATCH, label: 'Want to Watch' },
@@ -37,7 +39,6 @@ const FILTER_OPTIONS = [
 
 export default function Home() {
 	const navigation = useNavigation();
-	const { signOut } = useAuth();
 	const { width } = useWindowDimensions();
 	const isWideScreen = width >= 700;
 	const [movies, setMovies] = useState([]);
@@ -54,10 +55,20 @@ export default function Home() {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	useEffect(() => {
-		getMovies()
-			.then(setMovies)
-			.catch(() => setIsError(true))
-			.finally(() => setIsLoading(false));
+		(moviesService.getAllPrivatePosts().then((response) => {
+			setMovies(response.data);
+		}),
+			(error) => {
+				console.log('Secured Page Error: ', error.response);
+				if (error.response && error.response.status == 403) {
+					authService.logout();
+					navigate('Login');
+				}
+			});
+		// getMovies()
+		// 	.then(setMovies)
+		// 	.catch(() => setIsError(true))
+		// 	.finally(() => setIsLoading(false));
 	}, []);
 
 	const handleCreate = async () => {
@@ -235,9 +246,7 @@ export default function Home() {
 						<Pressable
 							key={movie._id}
 							style={[styles.movieItem, isWideScreen && styles.movieItemWide]}
-							onPress={() =>
-								navigation.navigate('Movie Details', { id: movie._id })
-							}
+							onPress={() => navigation.navigate('Details', { id: movie._id })}
 						>
 							<Text style={styles.movieTitle}>{movie.title}</Text>
 							<Text style={styles.movieGenre}>{movie.genre}</Text>
