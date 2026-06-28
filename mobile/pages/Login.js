@@ -8,9 +8,10 @@ import {
 	Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import AuthScreen from '../components/AuthScreen';
 import { useAuth } from '../context/AuthContext';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Login() {
 	const navigation = useNavigation();

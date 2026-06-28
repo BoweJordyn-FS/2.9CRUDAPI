@@ -1,8 +1,9 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { CinemaOld } from 'iconoir-react-native';
-import Heading from './Heading';
 import { useAuth } from '../context/AuthContext';
+
+import Heading from './Heading';
 
 export default function Screen({ children }) {
 	const { logOut } = useAuth();

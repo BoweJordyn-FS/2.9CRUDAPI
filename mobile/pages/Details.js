@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
-import Screen from '../components/Screen';
-import MovieModal from '../components/MovieModal';
+
 import { Movie, EditPencil, TrashSolid } from 'iconoir-react-native';
+
 import { getMovie, updateMovie, deleteMovie } from '../api/Movies';
 import { DEFAULT_FORM, statusBadgeColor } from '../constants/movie';
 
+import MovieModal from '../components/MovieModal';
+import Screen from '../components/Screen';
 export default function Details() {
 	const navigation = useNavigation();
 	const route = useRoute();

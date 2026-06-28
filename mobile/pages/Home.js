@@ -11,9 +11,11 @@ import {
 	useWindowDimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
+
 import Screen from '../components/Screen';
 import MovieModal from '../components/MovieModal';
-import { EditPencil, TrashSolid, StarSolid } from 'iconoir-react-native';
+
 import {
 	getMovies,
 	createMovie,

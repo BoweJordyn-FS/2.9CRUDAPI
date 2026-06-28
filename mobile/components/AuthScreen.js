@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { CinemaOld } from 'iconoir-react-native';
+
 import Heading from './Heading';
 
 export default function AuthScreen({ title, children }) {
